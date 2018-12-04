@@ -9,8 +9,9 @@ const { timingSafeEqual } = require('crypto')
 
 const bodyparser = require('body-parser')
 const session_middleware = require('../middleware/session')
+const recaptcha_middleware = require('../middleware/recaptcha')
 
-router.put('/password', session_middleware.session(), session_middleware.check(true), bodyparser.json(), async (req, res) => {
+router.put('/password', session_middleware.session(), session_middleware.check(true), bodyparser.json(), recaptcha_middleware.verifyRecaptcha(true), async (req, res) => {
     // check old password
     const old_password = req.body.old_password
     if (!old_password) return res.status(400).json({ ok: false, code: 400, description: 'Old password not found' })
@@ -36,6 +37,16 @@ router.put('/apppassword', session_middleware.session(), session_middleware.chec
 
 router.delete('/apppassword', session_middleware.session(), session_middleware.check(true), async (req, res) => {
     await db.deleteUserApplicationPassword(req.user.id)
+    return res.json({ ok: true })
+})
+
+router.delete('/', session_middleware.session(), session_middleware.check(true), bodyparser.json(), recaptcha_middleware.verifyRecaptcha(true), async (req, res) => {
+    // check old password
+    const password = req.body.password
+    if (!password) return res.status(400).json({ ok: false, code: 400, description: 'Password not found' })
+    const enc = await scrypt(password, req.user.salt)
+    if (timingSafeEqual(req.user.password, enc)) return res.status(400).json({ ok: false, code: 400, description: 'Password not match' })
+    await db.deleteUser(req.user.id)
     return res.json({ ok: true })
 })
 

@@ -21,15 +21,15 @@ username_input.addEventListener('focusout', async () => {
         submit_btn.style.backgroundColor = '#F44336'
     }
 })
-submit_btn.addEventListener('click', () => {
-    if (!loginform.reportValidity()) return
+submit_btn.addEventListener('click', (e) => {
+    if (!loginform.reportValidity()) return 
     progress.open()
     username_input.disabled = true
     password_input.disabled = true
     submit_btn.disabled = true
+    grecaptcha.execute()
 })
 async function doLogin(token) {
-    if (!loginform.reportValidity()) return
     error_indicator.style.display = 'none'
     const username = username_input.value
     const password = password_input.value

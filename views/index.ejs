@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>用户管理</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linear-progress.min.css">
-    <link rel="stylesheet" href="/static/index.css?1">
+    <link rel="stylesheet" href="/static/index.css?3">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
         <div><a href="/logout">注销</a></div>
         <hr>
         <div class="part">
-            <h2 class="part-title">修改密码</h3>
+            <h2 class="part-title">修改密码</h2>
                 <div class="part-content">
                     <form onsubmit="return false" name="changepwd" id="Fchangepwd">
                         <div id="changepwd-error" class="error-indicator"></div>
@@ -28,12 +28,13 @@
                                 autocomplete="new-password"></div>
                         <div><input type="password" id="new_password_repeat" name="new_password_repeat" placeholder="重复新密码"
                                 required autocomplete="new-password"></div>
-                        <div><button type="submit" class="submit-btn" id="changepwd_submit" onclick="changePassword()">更改密码</button></div>
+                        <div id="changepwd_captcha" class="recaptcha" data-callback="changePassword"></div>
+                        <div><button type="submit" class="submit-btn" id="changepwd_submit" onclick="preChangePassword()">更改密码</button></div>
                     </form>
                 </div>
         </div>
         <div class="part">
-            <h2 class="part-title">设置应用密码</h3>
+            <h2 class="part-title">设置应用密码</h2>
                 <div class="part-content">
                     <label>当您与在其他站通过本站的用户名密码登录时，请使用此密码。</label>
                     <p>当前应用密码状态：<%= app_password !== null ? '已设置' : '未设置' %></p>
@@ -64,8 +65,8 @@
                                         required autocomplete="off"></div>
                                 <div><input type="password" id="bbs_password" name="bbs_password" placeholder="密码"
                                         required autocomplete="off"></div>
-                                <div><button type="submit" class="submit-btn g-recaptcha" data-sitekey="6LeXYHwUAAAAAM8_nebXjxcXShHtSTKxZwXmwM5h"
-                                        data-callback="doBindBBS">登录</button></div>
+                                <div id="bindbbs_captcha" class="recaptcha" data-callback="doBindBBS"></div>
+                                <div><button type="submit" class="submit-btn" id="bindbbs_submit" onclick='preBindBBS()'>登录</button></div>
                                 <label>您的用户名和密码将被用于一次性认证论坛身份。此凭据不会保存，不受到密码更改的影响。绑定后请尽快修改密码。</label>
                             </form>
                         </div>
@@ -77,6 +78,7 @@
                             </div>
                             <form name="bind_bbs" onsubmit="return false">
                                 <button id="unbind-bbs" class="unbind-btn" onclick="doUnbindBBS()">解绑论坛帐号</button>
+                            </form>
                         </div>
                         <% } %>
                     </div>
@@ -99,6 +101,7 @@
                             </div>
                             <form name="bind_minecraft" onsubmit="return false">
                                 <button id="unbind-minecraft" class="unbind-btn" onclick="doUnbindMinecraft()">解绑&nbsp;Minecraft&nbsp;帐号</button>
+                            </form>
                         </div>
                         <% } %>
                     </div>
@@ -125,7 +128,7 @@
             </div>
         </div>
         <div class="part">
-            <h2 class="part-title">OAuth 客户端</h3>
+            <h2 class="part-title">OAuth 客户端</h2>
                 <div class="part-content">
                     <% if (clients) { %>
                     <ul>
@@ -138,10 +141,20 @@
                     <div><a href="/editclient">创建客户端</a></div>
                 </div>
         </div>
-    </div>
+        <div class="part">
+            <h2 class="part-title">删除帐号</h2>
+                <div class="part-content">
+                    <form onsubmit="return false" name="deleteaccount" id="Fdeleteaccount">
+                        <div id="deleteaccount-error" class="error-indicator"></div>
+                        <label>删除帐号将清除帐号的全部数据，包括绑定状态、应用密码、OAuth 客户端信息等。<b>此操作不可逆。</b></label>
+                        <div><input type="password" id="delete_confirm_password" name="password" placeholder="输入密码确认操作" required autocomplete="off"></div>
+                        <div id="deleteaccount_captcha" class="recaptcha" data-callback="deleteAccount"></div>
+                        <div><button type="submit" class="unbind-btn" id="deleteaccount_submit"  onclick="preDeleteAccount()">确认删除帐号</button></div>
+                    </form>
+                </div>
+        </div>
     </div>
 
-    </div>
     <div id="progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed progress">
         <div class="mdc-linear-progress__buffering-dots"></div>
         <div class="mdc-linear-progress__buffer"></div>
@@ -152,10 +165,23 @@
             <span class="mdc-linear-progress__bar-inner"></span>
         </div>
     </div>
-    <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
+    <script>    
+        const sitekey = '6LeXYHwUAAAAAM8_nebXjxcXShHtSTKxZwXmwM5h'
+
+        var loadRecaptcha = function () {
+            const captchaobjects = document.querySelectorAll('div.recaptcha')
+            for (const n of captchaobjects) {
+                n.dataset.widgetid = grecaptcha.render(n, {
+                    sitekey,
+                    size: 'invisible'
+                }, true)
+            }
+        }
+    </script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js?onload=loadRecaptcha&render=explicit" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async
         defer></script>
-    <script src="/static/index.js?1" async defer></script>
+    <script src="/static/index.js?4" async defer></script>
 
 </body>
 

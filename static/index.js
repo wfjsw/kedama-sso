@@ -1,11 +1,20 @@
 const progress = new mdc.linearProgress.MDCLinearProgress(document.getElementById('progress'))
 
-async function changePassword() {
+function preChangePassword() {
     if (!document.getElementById('Fchangepwd').reportValidity()) return 
+    document.getElementById('old_password').disabled = true
+    document.getElementById('new_password').disabled = true
+    document.getElementById('new_password_repeat').disabled = true
+    document.getElementById('changepwd_submit').disabled = true
+    progress.open()
+    grecaptcha.execute(document.getElementById('changepwd_captcha').dataset.widgetid)
+}
+
+async function changePassword(token) {
     const old_password = document.getElementById('old_password').value
     const new_password = document.getElementById('new_password').value
     const new_password_repeat = document.getElementById('new_password_repeat').value
-    if (!old_password || !new_password || !new_password_repeat) return false
+    if (!old_password || !new_password || !new_password_repeat || !token) return false
     const error_indicator = document.getElementById('changepwd-error')
     if (new_password !== new_password_repeat) {
         document.getElementById('Fchangepwd').reset()
@@ -13,10 +22,10 @@ async function changePassword() {
         error_indicator.display = 'inline-block'
         return
     }
-    progress.open()
     const changepwd_body = {
         old_password,
-        new_password
+        new_password,
+        'g-recaptcha-response': token
     }
     const changepwd_req = await fetch('/user/password', {
         method: 'PUT',
@@ -32,6 +41,10 @@ async function changePassword() {
         return location.reload()
     } else {
         progress.close()
+        document.getElementById('old_password').disabled = false
+        document.getElementById('new_password').disabled = false
+        document.getElementById('new_password_repeat').disabled = false
+        document.getElementById('changepwd_submit').disabled = false
         const { code, description } = changepwd_res
         error_indicator.style.display = 'inline-block'
         error_indicator.innerText = `错误 #${code}: ${description}`
@@ -86,7 +99,15 @@ async function deleteAppPassword() {
     }
 }
 
-// Bind by reCaptcha
+function preBindBBS() {
+    if (!document.getElementById('Fbind_bbs').reportValidity()) return
+    document.getElementById('bbs_username').disabled = true
+    document.getElementById('bbs_password').disabled = true
+    document.getElementById('bindbbs_submit').disabled = true
+    progress.open()
+    grecaptcha.execute(document.getElementById('bindbbs_captcha').dataset.widgetid)
+}
+
 async function doBindBBS(token) {
     const username = document.getElementById('bbs_username').value
     const password = document.getElementById('bbs_password').value
@@ -111,6 +132,9 @@ async function doBindBBS(token) {
         return location.reload()
     } else {
         progress.close()
+        document.getElementById('bbs_username').disabled = false
+        document.getElementById('bbs_password').disabled = false
+        document.getElementById('bindbbs_submit').disabled = false
         const { code, description } = bindbbs_res
         error_indicator.style.display = 'inline-block'
         error_indicator.innerText = `错误 #${code}: ${description}`
@@ -198,6 +222,46 @@ async function doUnbindTelegram() {
     } else {
         progress.close()
         const { code, description } = unbind_res
+        error_indicator.style.display = 'inline-block'
+        error_indicator.innerText = `错误 #${code}: ${description}`
+    }
+}
+
+function preDeleteAccount() {
+    if (!document.getElementById('Fdeleteaccount').reportValidity()) return
+    if (!confirm('您确认要删除帐号吗？')) return
+    document.getElementById('delete_confirm_password').disabled = true
+    document.getElementById('deleteaccount_submit').disabled = true
+    progress.open()
+    grecaptcha.execute(document.getElementById('deleteaccount_captcha').dataset.widgetid)
+}
+
+async function deleteAccount(token) {
+    const password = document.getElementById('delete_confirm_password').value
+    if (!password || !token) return false
+    const error_indicator = document.getElementById('deleteaccount-error')
+    const body = {
+        password,
+        'g-recaptcha-response': token
+    }
+    const req = await fetch('/user/', {
+        method: 'DELETE',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        cache: 'no-cache'
+    })
+    const res = await req.json()
+    if (res.ok) {
+        return location.reload()
+    } else {
+        progress.close()
+        document.getElementById('delete_confirm_password').disabled = false
+        document.getElementById('deleteaccount_submit').disabled = false
+        document.getElementById('Fdeleteaccount').clear()
+        const { code, description } = res
         error_indicator.style.display = 'inline-block'
         error_indicator.innerText = `错误 #${code}: ${description}`
     }

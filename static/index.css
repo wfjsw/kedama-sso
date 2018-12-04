@@ -44,6 +44,10 @@ button.unbind-btn {
 .button-set {
     margin: 18px 0;
 }
+button:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
 input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
