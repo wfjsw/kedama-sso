@@ -1,44 +1,63 @@
-const express = require('express')
+const cluster = require('cluster')
+const numCPUs = require('os').cpus().length
 
-const {host, port} = require('./config.json')
+if (cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`)
 
-const RApi = require('./routes/api')
-const RBinding = require('./routes/binding')
-const RIndex = require('./routes/index')
-const ROauthClient = require('./routes/oauthclient')
-const RSSO = require('./routes/sso')
-const RUserCtl = require('./routes/userctl')
+    // Fork workers.
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork()
+    }
 
-const MRealIp = require('./middleware/realip')
+    cluster.on('exit', (worker, code, signal) => {
+        console.log(`worker ${worker.process.pid} died. restarting...`)
+        cluster.fork()
+    })
+} else {
+    console.log(`Worker ${process.pid} online`)
+    const express = require('express')
 
-const app = express()
+    const { host, port } = require('./config.json')
 
-app.use(MRealIp.resolveRealIP(true))
+    const RApi = require('./routes/api')
+    const RBinding = require('./routes/binding')
+    const RIndex = require('./routes/index')
+    const ROauthClient = require('./routes/oauthclient')
+    const RSSO = require('./routes/sso')
+    const RUserCtl = require('./routes/userctl')
 
-app.engine('ejs', require('ejs').renderFile)
-app.set('view engine', 'ejs')
-app.set('views', './views')
+    const MRealIp = require('./middleware/realip')
 
-const static_options = {
-    dotfiles: 'ignore',
-    fallthrough: true,
-    index: false,
-    immutable: true,
-    maxAge: '365d',
-    redirect: false
+    const app = express()
+
+    app.use(MRealIp.resolveRealIP(true))
+
+    app.engine('ejs', require('ejs').renderFile)
+    app.set('view engine', 'ejs')
+    app.set('views', './views')
+    app.set('x-powered-by', false)
+
+    const static_options = {
+        dotfiles: 'ignore',
+        fallthrough: true,
+        index: false,
+        immutable: true,
+        maxAge: '365d',
+        redirect: false
+    }
+
+    app.use('/static', express.static('static', static_options))
+
+    app.use('/api', RApi)
+    app.use('/binding', RBinding)
+    app.use('/oauthClient', ROauthClient)
+    app.use('/sso', RSSO)
+    app.use('/user', RUserCtl)
+    app.use('/', RIndex)
+
+    app.use(async (req, res) => {
+        return res.sendStatus(404)
+    })
+
+    app.listen(port, host)
 }
-
-app.use('/static', express.static('static', static_options))
-
-app.use('/api', RApi)
-app.use('/binding', RBinding)
-app.use('/oauthClient', ROauthClient)
-app.use('/sso', RSSO)
-app.use('/user', RUserCtl)
-app.use('/', RIndex)
-
-app.use(async (req, res) => {
-    return res.sendStatus(404)
-})
-
-app.listen(port, host)

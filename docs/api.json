@@ -27,16 +27,6 @@
             },
             "required": true,
             "description": "User ID"
-          },
-          {
-            "in": "header",
-            "name": "Authorization",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Bearer Token",
-            "example": "Bearer abcdefghijklmnopqrstuvwxyz"
           }
         ],
         "responses": {
@@ -124,7 +114,6 @@
     "/api/user/{uid}/getBindings": {
       "get": {
         "summary": "Get User Bindings",
-        "description": "Note that if a correspond OAuth Bearer Token is provided at \"Authorization: Bearer\" header, bind data in detail can be occupied instead of boolean value stating bind status.",
         "tags": [
           "Public API"
         ],
@@ -145,7 +134,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Bearer Token",
+            "description": "Bearer Token  \nIf specified, bind data in detail can be occupied instead of boolean value stating bind status.\n",
             "example": "Bearer abcdefghijklmnopqrstuvwxyz"
           }
         ],
@@ -636,7 +625,7 @@
                     "$ref": "#/components/schemas/password_grant"
                   }
                 ],
-                "example": "See model page. Encode to query string."
+                "example": "Authorization Code:\nclient_id=ABCD&client_secret=ABCD&code=EFGH&grant_type=authorization_code\n\nPassword Grant:\nclient_id=ABCD&client_secret=ABCD&username=tranquility&password=supersecretapppassword&grant_type=password\n"
               }
             },
             "application/json": {
@@ -649,7 +638,7 @@
                     "$ref": "#/components/schemas/password_grant"
                   }
                 ],
-                "example": "See model page. Encode to JSON."
+                "example": "Authorization Code:\n{\n  \"client_id\": \"ABCD\",\n  \"client_secret\": \"ABCD\",\n  \"code\": \"EFGH\",\n  \"grant_type\": \"authorization_code\"\n}\nPassword Grant: \n{\n  \"client_id\": \"ABCD\",\n  \"client_secret\": \"ABCD\",\n  \"username\": \"tranquility\",\n  \"password\": \"supersecretapppassword\",\n  \"grant_type\": \"password\"\n}\n"
               }
             }
           }
@@ -812,9 +801,10 @@
         ],
         "example": {
           "ok": true,
-          "data": null,
-          "id": 3,
-          "username": "jsw"
+          "data": {
+            "id": 3,
+            "username": "jsw"
+          }
         }
       },
       "authorization_code_grant": {

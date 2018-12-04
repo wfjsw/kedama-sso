@@ -21,13 +21,6 @@ paths:
             type: integer
           required: true
           description: User ID
-        - in: header
-          name: Authorization
-          schema:
-            type: string
-          required: false
-          description: Bearer Token
-          example: Bearer abcdefghijklmnopqrstuvwxyz
       responses:
         '200':
           description: Return user profile
@@ -86,7 +79,6 @@ paths:
   /api/user/{uid}/getBindings:
     get:
       summary: Get User Bindings
-      description: 'Note that if a correspond OAuth Bearer Token is provided at "Authorization: Bearer" header, bind data in detail can be occupied instead of boolean value stating bind status.'
       tags: 
         - Public API
       parameters:
@@ -101,7 +93,9 @@ paths:
           schema:
             type: string
           required: false
-          description: Bearer Token
+          description: |
+            Bearer Token  
+            If specified, bind data in detail can be occupied instead of boolean value stating bind status.
           example: Bearer abcdefghijklmnopqrstuvwxyz
       responses:
         '200':
@@ -455,13 +449,33 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/authorization_code_grant'
                 - $ref: '#/components/schemas/password_grant'
-              example: See model page. Encode to query string.
+              example: |
+                Authorization Code:
+                client_id=ABCD&client_secret=ABCD&code=EFGH&grant_type=authorization_code
+                
+                Password Grant:
+                client_id=ABCD&client_secret=ABCD&username=tranquility&password=supersecretapppassword&grant_type=password
           application/json:
             schema: 
               oneOf:
                 - $ref: '#/components/schemas/authorization_code_grant'
                 - $ref: '#/components/schemas/password_grant'
-              example: See model page. Encode to JSON.
+              example: |
+                Authorization Code:
+                {
+                  "client_id": "ABCD",
+                  "client_secret": "ABCD",
+                  "code": "EFGH",
+                  "grant_type": "authorization_code"
+                }
+                Password Grant: 
+                {
+                  "client_id": "ABCD",
+                  "client_secret": "ABCD",
+                  "username": "tranquility",
+                  "password": "supersecretapppassword",
+                  "grant_type": "password"
+                }
       responses:
         '200':
           description: Authorization code grant
@@ -570,8 +584,8 @@ components:
       example: 
         ok: true
         data: 
-        id: 3
-        username: jsw
+          id: 3
+          username: jsw
     authorization_code_grant: 
       type: object 
       properties: 

@@ -27,13 +27,21 @@
             <input type="text" placeholder="用户名" name="username" id='username-input' required autocomplete="username">
             <input type="password" placeholder="密码" name="password" id="password-input" required minlength="8" autocomplete="current-password">
             <div class="g-recaptcha" data-sitekey="6LeXYHwUAAAAAM8_nebXjxcXShHtSTKxZwXmwM5h" data-callback="doLogin" data-size="invisible"></div>
-            <button type="submit" class="login-btn g-recaptcha" id="login-btn">登录</button>
+            <button type="submit" class="login-btn" id="login-btn">登录</button>
             <div class="error-indicator" id="error-indicator"></div>
         </div>
     </form>
-    <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js?hl=zh-CN" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async defer></script>
     <script src="/static/login.js?2" async defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100485050-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-100485050-4');
+    </script>
 </body>
 
 </html>

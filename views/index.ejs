@@ -178,11 +178,18 @@
             }
         }
     </script>
-    <script src="https://www.recaptcha.net/recaptcha/api.js?onload=loadRecaptcha&render=explicit" async defer></script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js?onload=loadRecaptcha&render=explicit&hl=zh-CN" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async
         defer></script>
     <script src="/static/index.js?4" async defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100485050-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
+        gtag('config', 'UA-100485050-4');
+    </script>
 </body>
 
 </html>
