@@ -1,0 +1,61 @@
+body {
+    display: flex;
+}
+.container {
+    max-width: 450px;
+    width: 100%;
+    margin:auto;
+    margin-top: 50px;
+    padding: 15px;
+    vertical-align: middle;
+}
+
+button {
+    padding: 12px 16px;
+    margin: 18px 0;
+    border: none;
+    width: 100%;
+    text-align: center;
+}
+button.submit-btn {
+    background: #4CAF50;
+    color: white;
+}
+button.unbind-btn {
+    background: #F44336;
+    color: white;
+}
+.button-set > button {
+    margin: 5px 0;
+}
+.button-set {
+    margin: 18px 0;
+}
+input[type=text], input[type=password], textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    resize: none;
+}
+.textarea {
+    user-select: all;
+}
+.error-indicator {
+    background-color: #D48376;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: none;
+    border: 1px solid #F44336;
+    box-sizing: border-box;
+}
+.progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}

@@ -1,0 +1,1018 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Kedama-SSO API</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Kedama-SSO API</h1>
+    <div class="app-desc">API definition for Kedama-SSO Server</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 0.1.0</div>
+    <div class="app-desc">BasePath:/</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+  
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  
+  
+  
+  <h4><a href="#OAuth">OAuth</a></h4>
+  <ul>
+  
+  <li><a href="#ssoAuthorizeGet"><code><span class="http-method">get</span> /sso/authorize</code></a></li>
+  
+  <li><a href="#ssoCheckGet"><code><span class="http-method">get</span> /sso/check</code></a></li>
+  
+  <li><a href="#ssoTokenPost"><code><span class="http-method">post</span> /sso/token</code></a></li>
+  
+  </ul>
+  
+  
+  
+  <h4><a href="#PublicAPI">PublicAPI</a></h4>
+  <ul>
+  
+  <li><a href="#apiBindingsBbsUidGet"><code><span class="http-method">get</span> /api/bindings/bbs/{uid}</code></a></li>
+  
+  <li><a href="#apiBindingsMinecraftUuidGet"><code><span class="http-method">get</span> /api/bindings/minecraft/{uuid}</code></a></li>
+  
+  <li><a href="#apiBindingsTelegramUidGet"><code><span class="http-method">get</span> /api/bindings/telegram/{uid}</code></a></li>
+  
+  <li><a href="#apiUserUidGetBindingsGet"><code><span class="http-method">get</span> /api/user/{uid}/getBindings</code></a></li>
+  
+  <li><a href="#apiUserUidGetProfileGet"><code><span class="http-method">get</span> /api/user/{uid}/getProfile</code></a></li>
+  
+  </ul>
+  
+  
+  
+
+  
+  
+  
+  <h1><a name="OAuth">OAuth</a></h1>
+  
+  <div class="method"><a name="ssoAuthorizeGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /sso/authorize</code></pre></div>
+    <div class="method-summary">Initate OAuth Authorization (<span class="nickname">ssoAuthorizeGet</span>)</div>
+    
+    <div class="method-notes">&lt;p&gt;Should redirect user to this page for authorization&lt;/p&gt;
+&lt;p&gt;See also: &lt;a href&#x3D;&quot;https://www.oauth.com/oauth2-servers/accessing-data/authorization-request/&quot;&gt;OAuth Specification on Authorization Request&lt;/a&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;After authorization, server will redirect user back to callback url specified in Client Settings with following query parameters available:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For &lt;a href&#x3D;&quot;https://www.oauth.com/oauth2-servers/access-tokens/authorization-code-request/&quot;&gt;Authorization Code&lt;/a&gt; Flow:
+&lt;ul&gt;
+&lt;li&gt;state&lt;/li&gt;
+&lt;li&gt;code&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;For Implicit Flow:
+&lt;ul&gt;
+&lt;li&gt;access_token&lt;/li&gt;
+&lt;li&gt;token_type&lt;/li&gt;
+&lt;li&gt;user_id&lt;/li&gt;
+&lt;li&gt;state&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</div>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">response_type (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Flow type. code for Authorization Code Flow or token for Implicit Flow </div><div class="param">client_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; OAuth Client ID </div><div class="param">scope (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; &lt;p&gt;Describe which binding is required for this grant.
+Separated by whitespace.&lt;/p&gt;
+&lt;p&gt;Valid values are &#x27;bbs&#x27; &#x27;minecraft&#x27; &#x27;telegram&#x27;&lt;/p&gt;
+&lt;p&gt;If omitted, there will be no limit on this grant.&lt;/p&gt;
+ </div><div class="param">state (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Random string to prevent request forgery </div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Load authorization page
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  <div class="method"><a name="ssoCheckGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /sso/check</code></pre></div>
+    <div class="method-summary">Check Access Token (<span class="nickname">ssoCheckGet</span>)</div>
+    
+    <div class="method-notes">Check whether access token still valid</div>
+
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+    
+
+    
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">token (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Bearer Token </div><div class="param">client_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; OAuth Client ID </div><div class="param">client_secret (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; OAuth Client Secret </div><div class="param">scope (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Binding list to re-verify </div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      inline_response_200_2
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Token status
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  <div class="method"><a name="ssoTokenPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /sso/token</code></pre></div>
+    <div class="method-summary">Occupy Access Token (<span class="nickname">ssoTokenPost</span>)</div>
+    
+    <div class="method-notes">Exchange Authorization Code for Access Token or Login use Password Grant</div>
+
+    
+
+    
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+    
+      <li><code>application/x-www-form-urlencoded</code></li>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body  (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      inline_response_200_1
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Authorization code grant
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  
+  
+  
+  <h1><a name="PublicAPI">PublicAPI</a></h1>
+  
+  <div class="method"><a name="apiBindingsBbsUidGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/bindings/bbs/{uid}</code></pre></div>
+    <div class="method-summary">Get user by BBS uid (<span class="nickname">apiBindingsBbsUidGet</span>)</div>
+    
+    <div class="method-notes"></div>
+
+    
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">uid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; BBS User ID format: int32</div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      user_profile
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Return user data
+        
+    
+    
+    <h4 class="field-label">404</h4>
+    User Not Found
+        
+    
+    
+    <h4 class="field-label">400</h4>
+    Invalid Request
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  <div class="method"><a name="apiBindingsMinecraftUuidGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/bindings/minecraft/{uuid}</code></pre></div>
+    <div class="method-summary">Get user by Minecraft UUID (<span class="nickname">apiBindingsMinecraftUuidGet</span>)</div>
+    
+    <div class="method-notes"></div>
+
+    
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">uuid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Minecraft UUID </div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      user_profile
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Return user data
+        
+    
+    
+    <h4 class="field-label">404</h4>
+    User Not Found
+        
+    
+    
+    <h4 class="field-label">400</h4>
+    Invalid Request
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  <div class="method"><a name="apiBindingsTelegramUidGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/bindings/telegram/{uid}</code></pre></div>
+    <div class="method-summary">Get user by Telegram uid (<span class="nickname">apiBindingsTelegramUidGet</span>)</div>
+    
+    <div class="method-notes"></div>
+
+    
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">uid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Telegram User ID format: int32</div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      user_profile
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Return user data
+        
+    
+    
+    <h4 class="field-label">404</h4>
+    User Not Found
+        
+    
+    
+    <h4 class="field-label">400</h4>
+    Invalid Request
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  <div class="method"><a name="apiUserUidGetBindingsGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/user/{uid}/getBindings</code></pre></div>
+    <div class="method-summary">Get User Bindings (<span class="nickname">apiUserUidGetBindingsGet</span>)</div>
+    
+    <div class="method-notes">Note that if a correspond OAuth Bearer Token is provided at &amp;quot;Authorization: Bearer&amp;quot; header, bind data in detail can be occupied instead of boolean value stating bind status.</div>
+
+    
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">uid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; User ID format: int32</div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      inline_response_200
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Return user profile
+        
+    
+    
+    <h4 class="field-label">404</h4>
+    User Not Found
+        
+    
+    
+    <h4 class="field-label">400</h4>
+    Invalid Request
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  <div class="method"><a name="apiUserUidGetProfileGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/user/{uid}/getProfile</code></pre></div>
+    <div class="method-summary">Get User Profile (<span class="nickname">apiUserUidGetProfileGet</span>)</div>
+    
+    <div class="method-notes"></div>
+
+    
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">uid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; User ID format: int32</div>
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+    
+
+    
+
+    
+
+    
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      user_profile
+    </div>
+    
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    
+
+    
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+    
+      <li><code>application/json</code></li>
+    
+    </ul>
+    
+
+    <h3 class="field-label">Responses</h3>
+    
+    <h4 class="field-label">200</h4>
+    Return user profile
+        
+    
+    
+    <h4 class="field-label">404</h4>
+    User Not Found
+        
+    
+    
+    <h4 class="field-label">400</h4>
+    Invalid Request
+        
+    
+    
+  </div> <!-- method -->
+  <hr/>
+  
+  
+  
+  
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+  
+  
+    <li><a href="#authorization_code_grant"><code>authorization_code_grant</code></a></li>
+  
+  
+  
+    <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
+  
+  
+  
+    <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+  
+  
+  
+    <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
+  
+  
+  
+    <li><a href="#inline_response_200_data"><code>inline_response_200_data</code></a></li>
+  
+  
+  
+    <li><a href="#inline_response_404"><code>inline_response_404</code></a></li>
+  
+  
+  
+    <li><a href="#password_grant"><code>password_grant</code></a></li>
+  
+  
+  
+    <li><a href="#user_profile"><code>user_profile</code></a></li>
+  
+  
+  
+    <li><a href="#user_profile_data"><code>user_profile_data</code></a></li>
+  
+  
+  </ol>
+
+  
+  
+  <div class="model">
+    <h3><a name="authorization_code_grant"><code>authorization_code_grant</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">client_id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> OAuth Client ID </div>
+      
+      <div class="param">client_secret </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> OAuth Client Secret </div>
+      
+      <div class="param">grant_type </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Grant Type </div>
+      
+      <div class="param">code </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Authorization Code </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">ok (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+      
+      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_data">inline_response_200_data</a></span>  </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="inline_response_200_1"><code>inline_response_200_1</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">access_token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+      
+      <div class="param">user_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+      
+      <div class="param">token_type (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="inline_response_200_2"><code>inline_response_200_2</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">active (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+      
+      <div class="param">client_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+      
+      <div class="param">user_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+      
+      <div class="param">username (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+      
+      <div class="param">issue_on (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="inline_response_200_data"><code>inline_response_200_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">bbs (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> BBS bind </div>
+      
+      <div class="param">minecraft (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Minecraft bind </div>
+      
+      <div class="param">telegram (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Telegram bind </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="inline_response_404"><code>inline_response_404</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">ok (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Always False </div>
+      
+      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Error Code format: int32</div>
+      
+      <div class="param">description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Error Description </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="password_grant"><code>password_grant</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">client_id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> OAuth Client ID </div>
+      
+      <div class="param">client_secret </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> OAuth Client Secret </div>
+      
+      <div class="param">grant_type </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Grant Type </div>
+      
+      <div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User Name </div>
+      
+      <div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> App Password </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="user_profile"><code>user_profile</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">ok </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+      
+      <div class="param">data </div><div class="param-desc"><span class="param-type"><a href="#user_profile_data">user_profile_data</a></span>  </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  
+  <div class="model">
+    <h3><a name="user_profile_data"><code>user_profile_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> User ID format: int32</div>
+      
+      <div class="param">username (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User Name </div>
+      
+      
+    </div>  <!-- field-items -->
+  </div>
+  
+  
+  </body>
+</html>

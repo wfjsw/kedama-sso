@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linear-progress.min.css">
+    <link rel="stylesheet" href="/static/authorize.css?1">
+</head>
+
+<body>
+    <form onsubmit="return false">
+        <div id="progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed progress">
+            <div class="mdc-linear-progress__buffering-dots"></div>
+            <div class="mdc-linear-progress__buffer"></div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+        </div>
+        <h2 class="title">授权应用</h2>
+        <h4 class="description">
+            <%= app_name %> 想通过本站登录</h3>
+            <div class="container">
+                <% if (require_scope) { %>
+                <div class="prerequisities">
+                    <strong>您需要完成以下绑定：</strong>
+                    <ul>
+                        <% for (const s of scope) { %>
+                        <li>
+                            <%= s %>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+                <% } %>
+                <% if (!require_scope || scope_valid) { %>
+                <button type="submit" class="authorize-btn" id="authorize-btn" onclick="authorize()">授权</button>
+                <% } else { %>
+                <div style="text-align: center">完成<a href="/">绑定</a>后请重新登录</div>
+                <% } %>
+                <div class="error-indicator" id="error-indicator"></div>
+            </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async
+        defer></script>
+    <script src="/static/authorize.js?1" async defer></script>
+
+</body>
+
+</html>

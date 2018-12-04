@@ -1,0 +1,74 @@
+body {
+    display: flex;
+}
+.container {
+    margin: auto;
+    margin-top: 25px;
+    max-width: 600px;
+    width: 95%;
+}
+.part {
+    border: 3px solid #eeeeee;
+    margin: 5px;
+    padding: 25px;
+}
+.part-title, .subpart-title {
+    margin-top: 0px;
+}
+.pre-text {
+    word-wrap: break-word;
+    user-select: all;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: #dddddd;
+    padding: 12px;
+}
+button {
+    padding: 12px 16px;
+    margin: 18px 0;
+    border: none;
+    width: 100%;
+    text-align: center;
+}
+button.submit-btn {
+    background: #4CAF50;
+    color: white;
+}
+button.unbind-btn {
+    background: #F44336;
+    color: white;
+}
+.button-set > button {
+    margin: 5px 0;
+}
+.button-set {
+    margin: 18px 0;
+}
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.error-indicator {
+    background-color: #D48376;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: none;
+    border: 1px solid #F44336;
+    box-sizing: border-box;
+}
+.subpart {
+    margin: 5px -15px;
+    padding: 15px
+}
+.progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}

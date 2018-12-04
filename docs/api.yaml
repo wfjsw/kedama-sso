@@ -1,0 +1,620 @@
+openapi: 3.0.0
+info:
+  title: Kedama-SSO API
+  description: API definition for Kedama-SSO Server
+  version: 0.1.0
+
+servers:
+  - url: https://kedama-sso.jsw3286.eu.org/
+    description: Main production server
+
+paths: 
+  /api/user/{uid}/getProfile:
+    get:
+      summary: Get User Profile
+      tags: 
+        - Public API
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: integer
+          required: true
+          description: User ID
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: false
+          description: Bearer Token
+          example: Bearer abcdefghijklmnopqrstuvwxyz
+      responses:
+        '200':
+          description: Return user profile
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_profile'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 404
+                description: User not found.
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 400
+                description: Invalid uid
+  /api/user/{uid}/getBindings:
+    get:
+      summary: Get User Bindings
+      description: 'Note that if a correspond OAuth Bearer Token is provided at "Authorization: Bearer" header, bind data in detail can be occupied instead of boolean value stating bind status.'
+      tags: 
+        - Public API
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: integer
+          required: true
+          description: User ID
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: false
+          description: Bearer Token
+          example: Bearer abcdefghijklmnopqrstuvwxyz
+      responses:
+        '200':
+          description: Return user profile
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  'ok':
+                    type: boolean
+                  'data':
+                    type: object
+                    properties:
+                      'bbs':
+                        type: boolean
+                        description: BBS bind
+                      'minecraft':
+                        type: boolean
+                        description: Minecraft bind
+                      'telegram': 
+                        type: boolean
+                        description: Telegram bind
+                    required: 
+                      - 'bbs'
+                      - 'minecraft'
+                      - 'telegram'
+                required: 
+                  - 'ok'
+                  - 'data'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 404
+                description: User not found.
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 400
+                description: Invalid uid
+  /api/bindings/bbs/{uid}:
+    get:
+      summary: Get user by BBS uid
+      tags:
+        - Public API
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: integer
+          required: true
+          description: BBS User ID
+          example: 395
+      responses:
+        '200':
+          description: Return user data
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_profile'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 404
+                description: User not found.
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 400
+                description: Invalid uid
+  /api/bindings/minecraft/{uuid}:
+    get:
+      summary: Get user by Minecraft UUID
+      tags:
+        - Public API
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: Minecraft UUID
+          example: '1660772470b643a4958bd62ed017e70a'
+      responses:
+        '200':
+          description: Return user data
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_profile'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 404
+                description: User not found.
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 400
+                description: Invalid uid
+  /api/bindings/telegram/{uid}:
+    get:
+      summary: Get user by Telegram uid
+      tags:
+        - Public API
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: integer
+          required: true
+          description: Telegram User ID
+          example: 80247363
+      responses:
+        '200':
+          description: Return user data
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_profile'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 404
+                description: User not found.
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ok':
+                    type: boolean
+                    description: Always False
+                  'code':
+                    type: integer
+                    description: Error Code
+                  'description':
+                    type: string
+                    description: Error Description
+                required:
+                  - 'ok'
+                  - 'code'
+                  - 'description'
+              example:
+                ok: false
+                code: 400
+                description: Invalid uid
+  /sso/authorize:
+    get:
+      description: |
+        Should redirect user to this page for authorization
+        
+        See also: [OAuth Specification on Authorization Request](https://www.oauth.com/oauth2-servers/accessing-data/authorization-request/)
+        
+        ---
+        After authorization, server will redirect user back to callback url specified in Client Settings with following query parameters available:
+        - For [Authorization Code](https://www.oauth.com/oauth2-servers/access-tokens/authorization-code-request/) Flow:
+          - state
+          - code
+        - For Implicit Flow:
+          - access_token
+          - token_type
+          - user_id
+          - state
+      
+      summary: Initate OAuth Authorization
+      tags:
+        - OAuth
+      parameters:
+        - in: query
+          name: response_type
+          schema:
+            type: string
+          required: true
+          description: Flow type. code for Authorization Code Flow or token for Implicit Flow
+          example: 'code'
+        - in: query
+          name: client_id
+          schema:
+            type: string
+          required: true
+          description: OAuth Client ID
+        - in: query
+          name: scope
+          schema: 
+            type: string
+          required: false
+          description: |
+            Describe which binding is required for this grant. 
+            Separated by whitespace. 
+            
+            Valid values are 'bbs' 'minecraft' 'telegram'
+            
+            If omitted, there will be no limit on this grant.
+          example: 'bbs minecraft'
+        - in: query
+          name: state
+          schema: 
+            type: string
+          required: true
+          description: Random string to prevent request forgery
+      responses:
+        '200':
+          description: Load authorization page
+  /sso/token:
+    post:
+      description: 'Exchange Authorization Code for Access Token or Login use Password Grant'
+      summary: Occupy Access Token
+      tags:
+        - OAuth
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema: 
+              oneOf:
+                - $ref: '#/components/schemas/authorization_code_grant'
+                - $ref: '#/components/schemas/password_grant'
+              example: See model page. Encode to query string.
+          application/json:
+            schema: 
+              oneOf:
+                - $ref: '#/components/schemas/authorization_code_grant'
+                - $ref: '#/components/schemas/password_grant'
+              example: See model page. Encode to JSON.
+      responses:
+        '200':
+          description: Authorization code grant
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  'access_token':
+                    type: string
+                  'user_id':
+                    type: integer
+                  'token_type':
+                    type: string
+                required:
+                  - 'access_token'
+                  - 'user_id'
+                  - 'token_type'
+              example: 
+                'access_token': abcdefghijklmn
+                'user_id': 3
+                'token_type': Bearer
+  
+  /sso/check:
+    get:
+      description: 'Check whether access token still valid'
+      summary: Check Access Token
+      tags:
+        - OAuth
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: false
+          description: Bearer Token
+          example: Bearer abcdefghijklmnopqrstuvwxyz
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: false
+          description: Bearer Token
+          example: abcdefghijklmnopqrstuvwxyz
+        - in: query
+          name: client_id
+          schema:
+            type: string
+          required: true
+          description: OAuth Client ID
+        - in: query
+          name: client_secret
+          schema:
+            type: string
+          required: true
+          description: OAuth Client Secret
+        - in: query
+          name: scope
+          schema:
+            type: string
+          required: false
+          description: Binding list to re-verify
+      responses:
+        '200':
+          description: Token status
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  'active':
+                    type: boolean
+                  'client_id':
+                    type: string
+                  'user_id':
+                    type: integer
+                  'username':
+                    type: string
+                  'issue_on': 
+                    type: integer
+                required:
+                  - 'active'
+
+components: 
+  schemas:
+    user_profile: 
+      type: object
+      properties: 
+        'ok':
+          type: boolean
+        'data':
+          type: object
+          properties:
+            'id':
+              type: integer
+              description: User ID
+            'username':
+              type: string
+              description: User Name
+          required: 
+            - 'id'
+            - 'username'
+      required: 
+        - 'ok'
+        - 'data'
+      example: 
+        ok: true
+        data: 
+        id: 3
+        username: jsw
+    authorization_code_grant: 
+      type: object 
+      properties: 
+        'client_id':
+          type: string
+          description: OAuth Client ID
+        'client_secret':
+          type: string
+          description: OAuth Client Secret
+        'grant_type':
+          type: string
+          description: Grant Type
+          example: authorization_code
+        'code':
+          type: string
+          description: Authorization Code
+      required:
+        - 'client_id'
+        - 'client_secret'
+        - 'grant_type'
+        - 'code'
+    password_grant:
+      type: object
+      properties:
+        'client_id':
+          type: string
+          description: OAuth Client ID
+        'client_secret':
+          type: string
+          description: OAuth Client Secret
+        'grant_type':
+          type: string
+          description: Grant Type
+          example: password
+        'username':
+          type: string
+          description: User Name
+        'password': 
+          type: string
+          description: App Password
+      required:
+        - 'client_id'
+        - 'client_secret'
+        - 'grant_type'
+        - 'username'
+        - 'password'

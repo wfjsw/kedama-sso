@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linear-progress.min.css">
+    <link rel="stylesheet" href="/static/edit_client.css?1">
+    <title>编辑 OAuth 客户端</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <form onsubmit="return false;" id="editform">
+            <% if (type !== 'new') { %>
+            <div>Client Id: <textarea id="client_id" rows="1" readonly><%= client_id %></textarea></div>
+            <div>Client Secret: <textarea id="client_secret" rows="1" readonly><%= client_secret %></textarea></div>
+            <div class="button-set">
+                <button type="submit" class="unbind-btn" id="revoke-btn"  onclick="revokeAllToken()">撤销所有登录</button>
+                <button type="submit" class="unbind-btn" id="resetsecret-btn" onclick="resetClientSecret()">重置 Client Secret</button>
+            </div>
+            <hr>
+            <% } %>
+            <textarea rows="1" placeholder="应用名" name="app_name" id='app_name' required><%= app_name %></textarea>
+            <textarea rows="1" placeholder="首页地址" name="homepage_url" id='homepage_url'><%= homepage_url %></textarea>
+            <textarea rows="1" placeholder="回调地址" name="callback_url" id='callback_url' required><%= callback_url %></textarea>
+
+            <div class="button-set">
+                <% if (type === 'new') { %>
+                <button type="submit" class="submit-btn" id="save-btn" onclick="newClient()">创建</button>
+                <% } else { %>
+                <button type="submit" class="submit-btn" id="save-btn" onclick="saveChanges()">保存</button>
+                <button type="submit" class="unbind-btn" id="delete-btn" onclick="deleteClient()">删除此客户端</button>
+                <% } %>
+            </div>
+
+            <div class="error-indicator" id="error-indicator"></div>
+        </form>
+        <div id="progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed progress">
+            <div class="mdc-linear-progress__buffering-dots"></div>
+            <div class="mdc-linear-progress__buffer"></div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async
+        defer></script>
+    <script src="/static/edit_client.js?1" async defer></script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linear-progress.min.css">
+    <link rel="stylesheet" href="/static/logout.css?1">
+    <title>Kedama-SSO</title>
+</head>
+
+<body>
+    <form onsubmit="return false" on>
+        <div id="progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed progress">
+            <div class="mdc-linear-progress__buffering-dots"></div>
+            <div class="mdc-linear-progress__buffer"></div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+        </div>
+        <h3 class="title">您确定要退出登录吗？</h3>
+
+        <div class="container">
+            <button type="submit" class="logout-btn" id="logout-btn">注销</button>
+            <div class="error-indicator" id="error-indicator"></div>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async defer></script>
+    <script src="/static/logout.js?1" async defer></script>
+</body>
+
+</html>
