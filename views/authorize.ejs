@@ -28,7 +28,7 @@
                 <div class="prerequisities">
                     <strong>您需要完成以下绑定：</strong>
                     <ul>
-                        <% for (const s of scope) { %>
+                        <% for (const s of scopes) { %>
                         <li>
                             <%= s %>
                         </li>
@@ -44,9 +44,9 @@
                 <div class="error-indicator" id="error-indicator"></div>
             </div>
     </form>
-    <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" async
+    <script src="https://cdn.jsdelivr.net/npm/@material/linear-progress@0.41.0/dist/mdc.linearProgress.min.js" 
         defer></script>
-    <script src="/static/authorize.js?1" async defer></script>
+    <script src="/static/authorize.js?1" defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100485050-4"></script>
     <script>
         window.dataLayer = window.dataLayer || [];

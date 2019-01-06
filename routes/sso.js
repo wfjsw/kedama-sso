@@ -93,12 +93,13 @@ router.get('/authorize', session_middleware.session(), session_middleware.check(
         app_name,
         require_scope: req.session.oauth_authorize.scope.length !== 0,
         scope_valid,
-        scope: req.session.oauth_authorize.scope
+        scopes: req.session.oauth_authorize.scope
     })
 })
 
 router.post('/authorize', session_middleware.session(), session_middleware.check(true), async (req, res) => {
     if (!req.session.oauth_authorize) return res.status(400).json({ ok: false, code: 400, description: 'Authorize request not found. Please enable cookies if you disable it.' })
+    
     if (Date.now() - req.session.oauth_authorize.createdTime > 15 * 60 * 1000) {
         // Expired request
         delete req.session.oauth_authorize
@@ -126,10 +127,24 @@ router.post('/authorize', session_middleware.session(), session_middleware.check
         return res.status(403).json({ok: false, code: 403, description: `Scope request not met. Required scopes: ${req.session.oauth_authorize.scope.join(', ')}`})
     }
     const { client_id, callback_url } = await db.getClient(req.session.oauth_authorize.client_id)
-    const access_token_obj = await db.createAccessToken(client_id, req.user.id)
-    const { state } = req.session.oauth_authorize
+    const { state, response_type } = req.session.oauth_authorize
+    const access_token_obj = await db.createAccessToken(client_id, req.user.id, response_type, 'authorization_code')
     delete req.session.oauth_authorize
-    return res.json({ ok: true, redirect: callback_url + '?' + qs.stringify({ state, code: access_token_obj.authorization_code }) })
+    if (response_type === 'code') {
+        return res.json({ ok: true, redirect: callback_url + '?' + qs.stringify({ state, code: access_token_obj.authorization_code }) })
+    } else if (response_type === 'token') {
+        return res.json({
+            ok: true,
+            redirect: callback_url + '?' + qs.stringify({
+                state,
+                access_token: access_token_obj.access_token,
+                token_type: 'Bearer',
+                user_id: access_token_obj.user_id
+            })
+        })
+    } else {
+        return res.status(500).json({ ok: false, code: 403, description: `Invalid response_type.` })
+    }
 })
 
 router.post('/token', cors(), bodyparser.urlencoded({extended: false}), bodyparser.json(), async (req, res) => {
@@ -150,7 +165,7 @@ router.post('/token', cors(), bodyparser.urlencoded({extended: false}), bodypars
         if (!code) return res.status(400).json({ error: 'invalid_request', error_description: 'Authorization code not present' })
         const token_obj = await db.getAccessTokenByAuthorizationCode(client_id, code)
         if (!token_obj) return res.status(401).json({ error: 'invalid_grant', error_description: 'Authorization code not found' })
-        if (token_obj.client_id !== client.id) return res.status(401).json({error: 'invalid_grant', error_description: 'Authorization code not found'})
+        if (token_obj.client_id !== client.client_id) return res.status(401).json({error: 'invalid_grant', error_description: 'Authorization code not found'})
         await db.dropAuthorizationCode(client_id, code)
         return res.json({
             access_token: token_obj.access_token,

@@ -30,7 +30,8 @@ exports.verifyRecaptcha = (enforced = true, responseField = 'g-recaptcha-respons
                 secret: recaptcha_secret,
                 response: resp,
                 remoteip: req.ip
-            })
+            }),
+            validateStatus: () => true
         })
         if (validation_data.data.success) {
             req.recaptcha = {

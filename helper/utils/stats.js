@@ -7,7 +7,9 @@ exports.checkBanned = async (uuid) => {
         const cachedresult = cache.get(uuid)
         if (Date.now() - cachedresult.cache_time < 30*60*1000) return cachedresult.data.data.banned
     }
-    const result = await axios.get(`https://stats.craft.moe/static/data/${uuid}/stats.json`)
+    const result = await axios.get(`https://stats.craft.moe/static/data/${uuid}/stats.json`, {
+        validateStatus: () => true
+    })
     if (result.status !== 200) return false
     cache.set(uuid, { data: result, cache_time: Date.now() })
     return result.data.banned

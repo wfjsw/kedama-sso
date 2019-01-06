@@ -12,9 +12,12 @@ exports.bind = () => {
         const username = req.body.username || false
         const password = req.body.password || false
         if (!username || !password) return res.status(400).json({ ok: false, code: 400, description: 'Missing auth parameters.' })
-        const { userId: uid } = await helper.loginToBBS(username, password)
+        const { token, userId: uid } = await helper.loginToBBS(username, password)
         if (!uid) return res.status(401).json({ ok: false, code: 401, description: 'Login failed.' })
-        const user_object = await helper.getUser(uid)
+        const user_object = await helper.getUser(token, uid)
+        if (!user_object) {
+            res.status(401).json({ ok: false, code: 404, description: 'User not found.' })
+        }
         const last_data = await db.getUserByBBSUID(uid)
         if (last_data) {
             await db.unbindBBS(last_data.id)
